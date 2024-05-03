@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+    environment {
+        TEST_PORTS=9087
+    }
+    stages {
+        stage("Saludo 1") {
+            steps {
+                echo "Hola desde saludo 1"
+            }
+        }
+        stage("Saludo 2") {
+            steps {
+                echo "Hola desde saludo 2 paso 1"
+                echo "Hola desde saludo 2 paso 2"
+            }
+        }
+        stage("Imprimir variable de entorno") {
+            steps {
+                echo "${env.TEST_PORTS}"
+                echo "${TEST_PORTS}"
+                echo "$TEST_PORTS"
+                
+                echo "=================="
+                
+                sh "echo ${env.TEST_PORTS}"
+                sh "echo ${TEST_PORTS}"
+                sh "echo $TEST_PORTS"
+                
+                echo "================="
+                sh "echo $TEST_PORT"
+            }
+        }
+        stage("Imprimir variable de entorno definida en system") {
+            steps {
+                echo "${env.TEST_PORT}"
+                echo "${TEST_PORT}"
+                echo "$TEST_PORT"
+                
+                echo "=================================="
+                
+                sh "echo ${env.TEST_PORT}"
+                sh "echo ${TEST_PORT}"
+                sh """echo $TEST_PORT"""
+            }
+            
+        }
+    }
+}
