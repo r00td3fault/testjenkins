@@ -4,11 +4,6 @@ pipeline {
         TEST_PORTS=9087
     }
     stages {
-        stage("Saludo 1") {
-            steps {
-                echo "Hola desde saludo 1"
-            }
-        }
         stage("Saludo 2") {
             steps {
                 echo "Hola desde saludo 2 paso 1"
