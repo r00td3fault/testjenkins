@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+    stages {
+        stage("Clear workspace") {
+            steps {
+                sh "rm -rf ./*"
+            }
+        }
+        stage("Clone repo") {
+            steps {
+                withCredentials(
+                    [
+                        usernamePassword(
+                            credentialsId: 'GITHUB_CREDENTIALS', 
+                            passwordVariable : 'GITHUB_PASS',
+                            usernameVariable : 'GITHUB_USERNAME'
+                        )
+                    ]
+                ) 
+                {
+                    script {
+                        sh "git clone https://$GITHUB_USERNAME:$GITHUB_PASS@github.com/r00td3fault/nodeApi.git"
+                    }    
+                }
+            }
+        }
+        stage("Trigger job") {
+            steps {
+                script {
+                    build job: 'quinto-pipeline', parameters: [
+                        string(name: 'NOMBRE_PIPELINE', value: "$JOB_NAME"),
+                        string(name: 'ID_JOB', value: "$BUILD_ID")
+                    ]
+                }
+            }
+        }
+    }
+}
